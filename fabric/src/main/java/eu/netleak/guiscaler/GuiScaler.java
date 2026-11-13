@@ -6,6 +6,7 @@ import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class GuiScaler implements ModInitializer {
@@ -34,7 +35,18 @@ public class GuiScaler implements ModInitializer {
 
             @Override
             public Map<Integer, Integer> getCustomRules() {
-                return CONFIG.customRules;
+                Map<Integer, Integer> rules = new HashMap<>();
+                for (String rule : CONFIG.customRules) {
+                    try {
+                        String[] parts = rule.split(":");
+                        if (parts.length == 2) {
+                            rules.put(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
+                        }
+                    } catch (NumberFormatException e) {
+                        Constants.LOG.error("Invalid custom rule format: {}", rule);
+                    }
+                }
+                return rules;
             }
         });
 

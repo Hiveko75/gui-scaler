@@ -1,14 +1,10 @@
 name: CI
 
+# Started by hand (Actions -> Run workflow) or by pushing a release tag: no builds on other pushes or pull requests.
 on:
+  workflow_dispatch:
   push:
-    branches:
-      - master
-      - main
-      - develop
-    tags:
-      - '*'
-  pull_request:
+    tags: ["*"]
 
 permissions:
   contents: write
